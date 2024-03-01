@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:14:25 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/23 09:14:26 by jberay           ###   ########.fr       */
+/*   Updated: 2024/02/27 12:14:34 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ int	main(int argc, char **argv)
 {
 	t_data		data;
 
+	init_data(&data);
 	if (argc < 5 || argc > 6)
 		return (ret_error(E_ARGS, &data));
 	if (check_input(argv))
 		return (ret_error(E_ARGS, &data));
 	if (check_args(&data, argv))
 		return (ret_error(E_ARGS, &data));
-	init_data(&data);
 	if (to_malloc(&data))
 		return (ret_error(E_MALLOC, &data));
 	set_forks(&data);

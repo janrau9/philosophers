@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:15:15 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/28 12:02:10 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/01 09:36:41 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void	ft_usleep(u_int64_t time)
 	u_int64_t	start;
 
 	start = get_time();
-	while (get_time() - start < time)
+	while ((get_time() - start) < time)
 	{
-		usleep(500);
+		usleep(100);
 	}
 }

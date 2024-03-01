@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:13:51 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/26 08:59:52 by jberay           ###   ########.fr       */
+/*   Updated: 2024/02/27 11:26:02 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static void	init_mutex(t_data *data)
 {
 	int	i;
 
-	i = 0;
-	while (++i < 8)
+	i = -1;
+	while (++i < 9)
 	{
 		pthread_mutex_init(&data->mutex[i].mutex, NULL);
 		data->mutex[i].init = true;

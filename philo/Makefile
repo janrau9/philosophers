@@ -6,14 +6,14 @@
 #    By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/07 11:38:23 by jberay            #+#    #+#              #
-#    Updated: 2024/02/26 11:04:34 by jberay           ###   ########.fr        #
+#    Updated: 2024/03/01 10:27:47 by jberay           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			=	philo
 
 CC				=	cc
-CFLAGS			=	-Wall -Wextra -Werror
+CFLAGS			=	-Wall -Wextra -Werror 
 RM				=	rm -rf
 
 SRCS 			=	ph_check_args.c \
@@ -35,7 +35,7 @@ OBJS			=	$(SRCS:%.c=%.o)
 all:				$(NAME)
 
 $(NAME):			$(OBJS)
-					$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
+					$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 					
 %.o:%.c
 					@$(CC) $(CFLAGS) -c $< -o $@		

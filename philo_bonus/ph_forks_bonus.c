@@ -5,27 +5,24 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/26 10:46:30 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/29 10:53:50 by jberay           ###   ########.fr       */
+/*   Created: 2024/03/01 11:30:25 by jberay            #+#    #+#             */
+/*   Updated: 2024/03/01 11:30:26 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static int	loop_monitor(t_philo *ph)
+static int	loop_monitor(t_data *data)
 {
-	if (get_time() - get_last_meal(ph) > ph->data->time_to_die)
+	if (get_time() - get_last_meal(data) > data->time_to_die)
 	{
-		set_state(ph, DEAD);
-		display_msg(ph, "died");
-		ph->data->sem_dead.sem = sem_open(SEM_DEAD, O_CREAT, 0644, 0);
-		if (ph->data->sem_dead.sem == SEM_FAILED)
-			return (1);
+		set_state(data, DEAD);
+		display_msg(data, "died");
+		exit_child(DEAD, data);
 	}
-	if (get_meals_eaten(ph) == ph->data->nbr_of_meals
-		&& read_i_am_done(ph) == false)
+	if (get_meals_eaten(data) == data->nbr_of_meals)
 	{
-		write_i_am_done(ph, true);
+		write_i_am_done(data, true);
 		return (1);
 	}
 	return (0);
@@ -33,72 +30,78 @@ static int	loop_monitor(t_philo *ph)
 
 static void	*monitor(void *arg)
 {
-	t_philo	*ph;
+	t_data	*data;
 
-	ph = (t_philo *)arg;
-	while (!check_state(ph, DEAD) && !read_i_am_done(ph))
+	data = (t_data *)arg;
+	while (!read_i_am_done(data))
 	{
-		if (loop_monitor(ph))
+		if (loop_monitor(data))
 			break ;
+		usleep(1000);
 	}
 	return (NULL);
 }
 
-static int	routine_proc(t_data *data, int i)
+static void	routine_proc(t_data *data, int i)
 {
 	init_philos(data, i);
 	if (data->ph.id % 2 == 0)
 		ft_usleep(data->time_to_eat / 2);
-	if (pthread_create(&data->ph.thread_mon, NULL, &monitor, &data->ph))
-		return (ret_error(E_THREAD, data));
-	while (!check_state(&data->ph, DEAD) && !read_i_am_done(&data->ph) && !dead_philos(data))
+	if (pthread_create(&data->ph.thread_mon, NULL, &monitor, data))
+		exit_error(E_THREAD, data);
+	while (!read_i_am_done(data))
 	{
-		if (eat_routine(&data->ph))
+		if (eat_routine(data))
 			break ;
-		if (sleep_routine(&data->ph))
+		if (sleep_routine(data))
 			break ;
-		if (think_routine(&data->ph))
+		if (think_routine(data))
 			break ;
 	}
 	if (pthread_join(data->ph.thread_mon, NULL))
-		return (ret_error(E_JOIN, data));
-	if (check_state(&data->ph, DEAD))
-		exit(DEAD);
-	exit(NO_ERROR);
+		exit_error(E_JOIN, data);
+	exit_error(NO_ERROR, data);
 }
 
-int	start_fork(t_data *data)
+static void	call_waitpid(t_data *data, int *status)
 {
 	int		i;
-	// pid_t	pid;
+
+	i = -1;
+	while (++i < data->ph_count)
+	{
+		waitpid(-1, status, 0);
+		if (WEXITSTATUS(*status) == DEAD)
+		{
+			i = -1;
+			while (++i < data->ph_count)
+				kill(data->pid[i], SIGTERM);
+			break ;
+		}
+		else if (WEXITSTATUS(*status) < 255 && WEXITSTATUS(*status) != 0)
+			exit_error(WEXITSTATUS(*status), data);
+	}
+}
+
+void	start_fork(t_data *data)
+{
+	int		i;
 	int		status;
 
 	data->pid = malloc(sizeof(int) * data->ph_count);
-
+	if (data->pid == NULL)
+		exit_error(E_MALLOC, data);
 	i = -1;
 	while (++i < data->ph_count)
 	{
 		data->pid[i] = fork();
 		if (data->pid[i] == -1)
-			return (ret_error(E_THREAD, data));
+			exit_error(E_FORK, data);
 		if (data->pid[i] == 0)
 		{
 			routine_proc(data, i);
-			return (0);
+			exit(0);
 		}
 	}
-	i = -1;
-	while (++i < data->ph_count)
-		waitpid(data->pid[i], &status, 0);
-	// while (1)
-	// {
-	// 	waitpid(0, &status, WNOHANG);
-	// 	if (WEXITSTATUS(status) == DEAD)
-	// 	{
-	// 		while (--i > -1)
-	// 			kill(data->pid[i], SIGTERM);
-	// 		return (DEAD);
-	// 	}
-	// }
-	return (0);
+	call_waitpid(data, &status);
 }

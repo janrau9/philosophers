@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 10:43:51 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/29 08:29:49 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/01 11:31:59 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,12 @@ int	check_input(char **argv)
 	return (0);
 }
 
-int	check_args(t_data *args, char **argv)
+void	check_args(t_data *args, char **argv)
 {
 	args->ph_count = ft_atoi(argv[1]);
 	args->time_to_die = (u_int64_t)ft_atoi(argv[2]);
 	args->time_to_eat = (u_int64_t)ft_atoi(argv[3]);
 	args->time_to_sleep = (u_int64_t)ft_atoi(argv[4]);
-	args->start_time = get_time();
-	args->ph.data = args;
-	args->ph.id = -1;
-	args->ph.last_meal = args->start_time;
-	args->ph.state = THINKING;
-	args->ph.meals_eaten = 0;
-	args->ph.i_am_done = false;
 	if (argv[5])
 		args->nbr_of_meals = ft_atoi(argv[5]);
 	else
@@ -55,6 +48,5 @@ int	check_args(t_data *args, char **argv)
 		|| args->time_to_die < 0
 		|| args->time_to_eat < 0
 		|| args->time_to_sleep < 0)
-		return (E_ARGS);
-	return (0);
+		exit_error(E_ARGS, args);
 }

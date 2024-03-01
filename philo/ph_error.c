@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:45:29 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/26 11:10:49 by jberay           ###   ########.fr       */
+/*   Updated: 2024/02/29 11:28:02 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	destroy_mutex(t_data *data)
 	int	j;
 
 	i = -1;
-	while (++i < 8)
+	while (++i < 9)
 	{
 		if (data->mutex[i].init)
 			pthread_mutex_destroy(&data->mutex[i].mutex);
@@ -68,7 +68,7 @@ int	ret_error(t_error error, t_data *data)
 	if (error != NO_ERROR)
 	{
 		printf("Error: %s\n", ft_strerror(error));
-		return (0);
+		return (1);
 	}
-	return (1);
+	return (0);
 }

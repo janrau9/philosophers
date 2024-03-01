@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:59:09 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/26 11:12:13 by jberay           ###   ########.fr       */
+/*   Updated: 2024/02/28 10:03:18 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ typedef struct s_data
 	pthread_t		*thread_ph;
 	pthread_t		thread_mon;
 	t_mutex			*forks;
-	t_mutex			mutex[8];
+	t_mutex			mutex[9];
 	t_philo			*phs;
 }					t_data;
 

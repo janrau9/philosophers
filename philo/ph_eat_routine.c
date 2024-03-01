@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 11:12:59 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/26 11:13:00 by jberay           ###   ########.fr       */
+/*   Updated: 2024/02/28 13:41:20 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	eat_routine(t_philo *ph)
 	if (check_state(ph, DEAD))
 		return (1);
 	if (pickup_forks(ph))
-		return (0);
+		return (1);
 	set_last_meal(ph);
 	set_state(ph, EATING);
 	display_msg(ph, "is eating");

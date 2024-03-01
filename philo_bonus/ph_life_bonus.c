@@ -6,27 +6,27 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:14:07 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/29 10:39:11 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/01 09:55:17 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	sleep_routine(t_philo *ph)
+int	sleep_routine(t_data *data)
 {
-	if (check_state(ph, DEAD) || read_i_am_done(ph))
+	if (read_i_am_done(data))
 		return (1);
-	set_state(ph, SLEEPING);
-	display_msg(ph, "is sleeping");
-	ft_usleep(ph->data->time_to_sleep);
+	set_state(data, SLEEPING);
+	display_msg(data, "is sleeping");
+	ft_usleep(data->time_to_sleep);
 	return (0);
 }
 
-int	think_routine(t_philo *ph)
+int	think_routine(t_data *data)
 {
-	if (check_state(ph, DEAD) || read_i_am_done(ph))
+	if (read_i_am_done(data))
 		return (1);
-	set_state(ph, THINKING);
-	display_msg(ph, "is thinking");
+	set_state(data, THINKING);
+	display_msg(data, "is thinking");
 	return (0);
 }

@@ -6,46 +6,46 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 10:45:07 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/28 13:28:18 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/01 10:06:31 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	write_i_am_done(t_philo *ph, bool value)
+void	set_state(t_data *data, t_state state)
 {
-	sem_wait(ph->sem.sem);
-	ph->i_am_done = value;
-	sem_post(ph->sem.sem);
+	sem_wait(data->ph.sem.sem);
+	data->ph.state = state;
+	sem_post(data->ph.sem.sem);
 }
 
-void	set_state(t_philo *ph, t_state state)
+void	set_last_meal(t_data *data)
 {
-	sem_wait(ph->sem.sem);
-	ph->state = state;
-	sem_post(ph->sem.sem);
+	sem_wait(data->ph.sem.sem);
+	data->ph.last_meal = get_time();
+	sem_post(data->ph.sem.sem);
 }
 
-void	set_last_meal(t_philo *ph)
+void	set_meals_eaten(t_data *data)
 {
-	sem_wait(ph->sem.sem);
-	ph->last_meal = get_time();
-	sem_post(ph->sem.sem);
+	sem_wait(data->ph.sem.sem);
+	data->ph.meals_eaten++;
+	sem_post(data->ph.sem.sem);
 }
 
-void	set_meals_eaten(t_philo *ph)
-{
-	sem_wait(ph->sem.sem);
-	ph->meals_eaten++;
-	sem_post(ph->sem.sem);
-}
-
-void	display_msg(t_philo *ph, char *msg)
+void	display_msg(t_data *data, char *msg)
 {
 	u_int64_t	time;
 
-	time = get_time() - ph->data->start_time;
-	sem_wait(ph->data->sem_print.sem);
-	printf("%llu %d %s\n", time, ph->id, msg);
-	sem_post(ph->data->sem_print.sem);
+	time = get_time() - data->start_time;
+	sem_wait(data->sem_print.sem);
+	printf("%llu %d %s\n", time, data->ph.id, msg);
+	sem_post(data->sem_print.sem);
+}
+
+void	write_i_am_done(t_data *data, bool value)
+{
+	sem_wait(data->ph.sem.sem);
+	data->ph.i_am_done = value;
+	sem_post(data->ph.sem.sem);
 }
