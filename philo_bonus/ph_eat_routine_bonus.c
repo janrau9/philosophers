@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 11:12:59 by jberay            #+#    #+#             */
-/*   Updated: 2024/03/01 09:51:22 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/11 09:02:25 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ int	eat_routine(t_data *data)
 	set_last_meal(data);
 	set_state(data, EATING);
 	display_msg(data, "is eating");
-	ft_usleep(data->time_to_eat);
 	set_meals_eaten(data);
+	ft_usleep(data->time_to_eat);
 	sem_post(data->sem_forks.sem);
 	sem_post(data->sem_forks.sem);
 	return (0);

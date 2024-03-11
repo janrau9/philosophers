@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 10:46:30 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/26 10:46:31 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/11 08:59:13 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	*monitor(void *arg)
 	i = -1;
 	while (++i < ph->data->ph_count)
 	{
-		set_state(&ph->data->phs[i], DEAD);
+		set_state(&data->phs[i], DEAD);
 	}
 	return (NULL);
 }
@@ -96,8 +96,6 @@ int	start_threads(t_data *data)
 		return (ret_error(E_JOIN, data));
 	i = -1;
 	while (++i < data->ph_count)
-	{
 		pthread_detach(data->thread_ph[i]);
-	}
 	return (0);
 }

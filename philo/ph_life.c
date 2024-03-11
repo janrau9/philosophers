@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:14:07 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/26 09:07:55 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/11 08:47:47 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	sleep_routine(t_philo *ph)
 {
-	if (check_state(ph, DEAD))
+	if (check_state(ph, DEAD)
+		&& read_i_am_done(ph))
 		return (1);
 	set_state(ph, SLEEPING);
 	display_msg(ph, "is sleeping");
@@ -24,7 +25,8 @@ int	sleep_routine(t_philo *ph)
 
 int	think_routine(t_philo *ph)
 {
-	if (check_state(ph, DEAD))
+	if (check_state(ph, DEAD)
+		&& read_i_am_done(ph))
 		return (1);
 	set_state(ph, THINKING);
 	display_msg(ph, "is thinking");

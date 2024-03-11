@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:30:25 by jberay            #+#    #+#             */
-/*   Updated: 2024/03/01 11:30:26 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/04 08:12:31 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ static void	*monitor(void *arg)
 static void	routine_proc(t_data *data, int i)
 {
 	init_philos(data, i);
-	if (data->ph.id % 2 == 0)
-		ft_usleep(data->time_to_eat / 2);
 	if (pthread_create(&data->ph.thread_mon, NULL, &monitor, data))
 		exit_error(E_THREAD, data);
 	while (!read_i_am_done(data))
@@ -60,7 +58,7 @@ static void	routine_proc(t_data *data, int i)
 	}
 	if (pthread_join(data->ph.thread_mon, NULL))
 		exit_error(E_JOIN, data);
-	exit_error(NO_ERROR, data);
+	exit_child(EATING, data);
 }
 
 static void	call_waitpid(t_data *data, int *status)
@@ -98,10 +96,7 @@ void	start_fork(t_data *data)
 		if (data->pid[i] == -1)
 			exit_error(E_FORK, data);
 		if (data->pid[i] == 0)
-		{
 			routine_proc(data, i);
-			exit(0);
-		}
 	}
 	call_waitpid(data, &status);
 }

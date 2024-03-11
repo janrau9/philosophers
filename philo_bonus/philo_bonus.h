@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:59:09 by jberay            #+#    #+#             */
-/*   Updated: 2024/03/01 09:49:23 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/04 08:14:06 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PHILO_BONUS_H
 
 # include <sys/time.h>
-# include <sys/stat.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
