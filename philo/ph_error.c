@@ -44,10 +44,10 @@ static void	destroy_mutex(t_data *data)
 		if (data->forks[i].init)
 			pthread_mutex_destroy(&data->forks[i].mutex);
 	}
-	j = -1;
 	i = -1;
 	while (++i < data->ph_count)
 	{
+		j = -1;
 		while (++j < 4)
 		{
 			if (data->phs[i].mutex[j].init)

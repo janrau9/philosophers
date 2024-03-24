@@ -14,8 +14,7 @@
 
 int	sleep_routine(t_philo *ph)
 {
-	if (check_state(ph, DEAD)
-		&& read_i_am_done(ph))
+	if (check_state(ph, DEAD))
 		return (1);
 	set_state(ph, SLEEPING);
 	display_msg(ph, "is sleeping");
@@ -25,8 +24,7 @@ int	sleep_routine(t_philo *ph)
 
 int	think_routine(t_philo *ph)
 {
-	if (check_state(ph, DEAD)
-		&& read_i_am_done(ph))
+	if (check_state(ph, DEAD))
 		return (1);
 	set_state(ph, THINKING);
 	display_msg(ph, "is thinking");

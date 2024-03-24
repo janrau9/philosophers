@@ -20,11 +20,11 @@ void	display_msg(t_philo *ph, char *msg)
 	pthread_mutex_lock(&ph->data->mutex[MSG].mutex);
 	if (check_state(ph, DEAD) && !get_mutex_flag(ph, SOMEONE_DIED))
 	{
-		printf("%llu %d %s\n", time, ph->id, msg);
+		printf("%lu %d %s\n", time, ph->id, msg);
 		set_someone_died(ph, true);
 	}
 	else if (!check_state(ph, DEAD) && !get_mutex_flag(ph, SOMEONE_DIED))
-		printf("%llu %d %s\n", time, ph->id, msg);
+		printf("%lu %d %s\n", time, ph->id, msg);
 	pthread_mutex_unlock(&ph->data->mutex[MSG].mutex);
 }
 

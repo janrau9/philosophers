@@ -36,7 +36,7 @@ void	init_data(t_data *data)
 	data->someone_died = false;
 	data->all_done = 0;
 	data->thread_ph = NULL;
-	data->thread_mon = NULL;
+	//data->thread_mon = NULL;
 	data->forks = NULL;
 	data->phs = NULL;
 }
@@ -63,8 +63,16 @@ void	set_forks(t_data *data)
 	init_mutex(data);
 	while (++i < data->ph_count)
 	{
-		data->phs[i].rght_frk = &data->forks[i].mutex;
-		data->phs[i].lft_frk = &data->forks[(i + 1) % data->ph_count].mutex;
+		if (i % 2 == 0)
+		{
+			data->phs[i].rght_frk = &data->forks[i].mutex;
+			data->phs[i].lft_frk = &data->forks[(i + 1) % data->ph_count].mutex;
+		}
+		else
+		{
+			data->phs[i].rght_frk = &data->forks[(i + 1) % data->ph_count].mutex;
+			data->phs[i].lft_frk = &data->forks[i].mutex;
+		}	
 	}
 }
 

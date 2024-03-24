@@ -96,6 +96,6 @@ int	start_threads(t_data *data)
 		return (ret_error(E_JOIN, data));
 	i = -1;
 	while (++i < data->ph_count)
-		pthread_detach(data->thread_ph[i]);
+		pthread_join(data->thread_ph[i], NULL);
 	return (0);
 }
