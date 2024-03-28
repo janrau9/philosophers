@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:30:25 by jberay            #+#    #+#             */
-/*   Updated: 2024/03/04 08:12:31 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/28 15:21:13 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 
 static int	loop_monitor(t_data *data)
 {
-	if (get_time() - get_last_meal(data) > data->time_to_die)
+	if (get_time() - read_last_meal(data) > data->time_to_die)
 	{
-		set_state(data, DEAD);
+		write_state(data, DEAD);
 		display_msg(data, "died");
 		exit_child(DEAD, data);
 	}
-	if (get_meals_eaten(data) == data->nbr_of_meals)
+	if (read_meals_eaten(data) == data->nbr_of_meals)
 	{
 		write_i_am_done(data, true);
 		return (1);
+		//sem_close(data->sem_full.sem);
 	}
 	return (0);
 }
@@ -33,11 +34,11 @@ static void	*monitor(void *arg)
 	t_data	*data;
 
 	data = (t_data *)arg;
-	while (!read_i_am_done(data))
+	while (!read_state(data, DEAD))
 	{
 		if (loop_monitor(data))
 			break ;
-		usleep(1000);
+		// usleep(1000);
 	}
 	return (NULL);
 }
@@ -49,10 +50,14 @@ static void	routine_proc(t_data *data, int i)
 		exit_error(E_THREAD, data);
 	while (!read_i_am_done(data))
 	{
+		// if (data->nbr_of_meals != -1)
+		// 	sem_wait(data->sem_full.sem);
 		if (eat_routine(data))
 			break ;
+		usleep(100);
 		if (sleep_routine(data))
 			break ;
+		usleep(100);
 		if (think_routine(data))
 			break ;
 	}
@@ -83,8 +88,8 @@ static void	call_waitpid(t_data *data, int *status)
 
 void	start_fork(t_data *data)
 {
-	int		i;
-	int		status;
+	int	i;
+	int	status;
 
 	data->pid = malloc(sizeof(int) * data->ph_count);
 	if (data->pid == NULL)

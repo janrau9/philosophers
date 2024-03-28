@@ -6,13 +6,13 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:31:01 by jberay            #+#    #+#             */
-/*   Updated: 2024/03/01 11:31:03 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/28 12:09:36 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-bool	check_state(t_data *data, t_state state)
+bool	read_state(t_data *data, t_state state)
 {
 	bool	ret;
 
@@ -24,7 +24,7 @@ bool	check_state(t_data *data, t_state state)
 	return (ret);
 }
 
-int	get_meals_eaten(t_data *data)
+int	read_meals_eaten(t_data *data)
 {
 	int	ret;
 
@@ -34,7 +34,7 @@ int	get_meals_eaten(t_data *data)
 	return (ret);
 }
 
-u_int64_t	get_last_meal(t_data *data)
+u_int64_t	read_last_meal(t_data *data)
 {
 	u_int64_t	ret;
 

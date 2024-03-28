@@ -6,34 +6,11 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:15:15 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/23 09:52:38 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/28 09:28:58 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-long	ft_atoi(const char *str)
-{
-	unsigned long long	result;
-	int					sign;
-
-	sign = 1;
-	result = 0;
-	if (*str == '\0')
-		return (-1);
-	while ((*str >= 9 && *str <= 13) || *str == 32)
-		str++;
-	if (*str == '-')
-		sign = -1;
-	if ((*str >= 0) && (*str == '-' || *str == '+'))
-		str++;
-	while ((*str >= '0' && *str <= '9'))
-	{
-		result = result * 10 + (*str - '0');
-		str++;
-	}
-	return ((long)result * sign);
-}
 
 u_int64_t	get_time(void)
 {

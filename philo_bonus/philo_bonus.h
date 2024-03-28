@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:59:09 by jberay            #+#    #+#             */
-/*   Updated: 2024/03/04 08:14:06 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/28 14:37:02 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define SEM_NAME "/philosopher"
 # define SEM_FORK "/forks"
 # define SEM_PRINT "/print"
-# define SEM_DEAD "/dead"
+# define SEM_FULL "/full"
 
 typedef enum e_state
 {
@@ -52,6 +52,7 @@ typedef struct s_sem
 {
 	sem_t	*sem;
 	bool	init;
+	int		locked;
 }			t_sem;
 
 typedef struct s_philo
@@ -63,7 +64,6 @@ typedef struct s_philo
 	u_int64_t		last_meal;
 	t_sem			sem;
 	pthread_t		thread_mon;
-	// struct s_data	*data;
 }					t_philo;
 
 typedef struct s_data
@@ -77,7 +77,7 @@ typedef struct s_data
 	u_int64_t		start_time;
 	t_sem			sem_forks;
 	t_sem			sem_print;
-	t_sem			sem_dead;
+	t_sem			sem_full;
 	t_philo			ph;
 }					t_data;
 
@@ -99,15 +99,15 @@ int			think_routine(t_data *data);
 void		start_fork(t_data *data);
 
 /*philo sem read*/
-int			get_meals_eaten(t_data *data);
-bool		check_state(t_data *data, t_state state);
-u_int64_t	get_last_meal(t_data *data);
+int			read_meals_eaten(t_data *data);
+bool		read_state(t_data *data, t_state state);
+u_int64_t	read_last_meal(t_data *data);
 bool		read_i_am_done(t_data *data);
 
 /*philo sem write*/
-void		set_state(t_data *data, t_state state);
-void		set_meals_eaten(t_data *data);
-void		set_last_meal(t_data *data);
+void		write_state(t_data *data, t_state state);
+void		write_meals_eaten(t_data *data);
+void		write_last_meal(t_data *data);
 void		write_i_am_done(t_data *data, bool value);
 void		display_msg(t_data *data, char *msg);
 

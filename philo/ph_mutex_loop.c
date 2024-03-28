@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ph_main_bonus.c                                    :+:      :+:    :+:   */
+/*   ph_mutex_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/23 09:14:25 by jberay            #+#    #+#             */
-/*   Updated: 2024/03/28 10:54:48 by jberay           ###   ########.fr       */
+/*   Created: 2024/03/27 10:07:07 by jberay            #+#    #+#             */
+/*   Updated: 2024/03/28 09:00:55 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "philo.h"
 
-int	main(int argc, char **argv)
-
+void	mutex_lock(t_mutex *mutex)
 {
-	t_data		data;
+	pthread_mutex_lock(&mutex->mutex);
+	while (mutex->locked)
+	{
+		pthread_mutex_unlock(&mutex->mutex);
+		usleep(100);
+		pthread_mutex_lock(&mutex->mutex);
+	}
+	mutex->locked = 1;
+	pthread_mutex_unlock(&mutex->mutex);
+}
 
-	init_data(&data);
-	if (argc < 5 || argc > 6)
-		exit_error(E_ARGS, &data);
-	if (check_input(argv))
-		exit_error(E_ARGS, &data);
-	check_args(&data, argv);
-	set_forks(&data);
-	start_fork(&data);
-	exit_error(NO_ERROR, &data);
+void	mutex_unlock(t_mutex *mutex)
+{
+	pthread_mutex_lock(&mutex->mutex);
+	mutex->locked = 0;
+	pthread_mutex_unlock(&mutex->mutex);
 }

@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 11:12:59 by jberay            #+#    #+#             */
-/*   Updated: 2024/03/11 09:02:25 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/28 15:15:58 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,31 @@
 
 static int	pick_right_fork(t_data *data)
 {
-	if (read_i_am_done(data))
+	if (read_state(data, DEAD))
 		return (1);
 	sem_wait(data->sem_forks.sem);
+	if (read_state(data, DEAD))
+		return (1);
 	display_msg(data, "has taken a fork");
 	return (0);
 }
 
 static int	pick_left_fork(t_data *data)
 {
-	if (read_i_am_done(data))
+	if (read_state(data, DEAD))
 		return (1);
 	if (data->ph_count == 1)
 		return (1);
 	sem_wait(data->sem_forks.sem);
+	if (read_state(data, DEAD))
+		return (1);
 	display_msg(data, "has taken a fork");
 	return (0);
 }
 
 static int	pickup_forks(t_data *data)
 {
-	if (read_i_am_done(data))
+	if (read_state(data, DEAD))
 		return (1);
 	if (pick_right_fork(data))
 		return (1);
@@ -50,17 +54,17 @@ int	eat_routine(t_data *data)
 {
 	if (pickup_forks(data))
 		return (1);
-	if (read_i_am_done(data))
+	if (read_state(data, DEAD))
 	{
 		sem_post(data->sem_forks.sem);
 		sem_post(data->sem_forks.sem);
 		return (1);
 	}
-	set_last_meal(data);
-	set_state(data, EATING);
+	write_last_meal(data);
+	write_state(data, EATING);
 	display_msg(data, "is eating");
-	set_meals_eaten(data);
 	ft_usleep(data->time_to_eat);
+	write_meals_eaten(data);
 	sem_post(data->sem_forks.sem);
 	sem_post(data->sem_forks.sem);
 	return (0);

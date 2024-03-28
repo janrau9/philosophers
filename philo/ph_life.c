@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:14:07 by jberay            #+#    #+#             */
-/*   Updated: 2024/03/11 08:47:47 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/28 08:56:34 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 int	sleep_routine(t_philo *ph)
 {
-	if (check_state(ph, DEAD))
+	if (read_state(ph, DEAD))
 		return (1);
-	set_state(ph, SLEEPING);
+	write_state(ph, SLEEPING);
+	if (read_state(ph, DEAD))
+		return (1);
 	display_msg(ph, "is sleeping");
 	ft_usleep(ph->data->time_to_sleep);
 	return (0);
@@ -24,9 +26,11 @@ int	sleep_routine(t_philo *ph)
 
 int	think_routine(t_philo *ph)
 {
-	if (check_state(ph, DEAD))
+	if (read_state(ph, DEAD))
 		return (1);
-	set_state(ph, THINKING);
+	write_state(ph, THINKING);
+	if (read_state(ph, DEAD))
+		return (1);
 	display_msg(ph, "is thinking");
 	return (0);
 }

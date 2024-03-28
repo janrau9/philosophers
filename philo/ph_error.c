@@ -6,11 +6,21 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:45:29 by jberay            #+#    #+#             */
-/*   Updated: 2024/02/29 11:28:02 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/28 09:34:11 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
 
 static char	*ft_strerror(t_error error)
 {
@@ -30,45 +40,43 @@ static char	*ft_strerror(t_error error)
 static void	destroy_mutex(t_data *data)
 {
 	int	i;
-	int	j;
 
-	i = -1;
-	while (++i < 9)
-	{
-		if (data->mutex[i].init)
-			pthread_mutex_destroy(&data->mutex[i].mutex);
-	}
 	i = -1;
 	while (++i < data->ph_count)
 	{
+		if (data->phs[i].mutex_last_meal.init)
+			pthread_mutex_destroy(&data->phs[i].mutex_last_meal.mutex);
+		if (data->phs[i].mutex_meals_eaten.init)
+			pthread_mutex_destroy(&data->phs[i].mutex_meals_eaten.mutex);
+		if (data->phs[i].mutex_state.init)
+			pthread_mutex_destroy(&data->phs[i].mutex_state.mutex);
+		if (data->phs[i].mutex_done.init)
+			pthread_mutex_destroy(&data->phs[i].mutex_done.mutex);
 		if (data->forks[i].init)
 			pthread_mutex_destroy(&data->forks[i].mutex);
 	}
-	i = -1;
-	while (++i < data->ph_count)
-	{
-		j = -1;
-		while (++j < 4)
-		{
-			if (data->phs[i].mutex[j].init)
-				pthread_mutex_destroy(&data->phs[i].mutex[j].mutex);
-		}
-	}
+	if (data->mutex_msg.init)
+		pthread_mutex_destroy(&data->mutex_msg.mutex);
 }
 
 int	ret_error(t_error error, t_data *data)
 {
-	destroy_mutex(data);
-	if (data->thread_ph)
-		free(data->thread_ph);
-	if (data->forks)
-		free(data->forks);
-	if (data->phs)
-		free(data->phs);
+	if (data)
+	{
+		destroy_mutex(data);
+		if (data->thd_ph)
+			free(data->thd_ph);
+		if (data->forks)
+			free(data->forks);
+		if (data->phs)
+			free(data->phs);
+	}
 	if (error != NO_ERROR)
 	{
-		printf("Error: %s\n", ft_strerror(error));
-		return (1);
+		write(2, "Error: ", 7);
+		write(2, ft_strerror(error), ft_strlen(ft_strerror(error)));
+		write(2, "\n", 1);
+		return (0);
 	}
-	return (0);
+	return (1);
 }

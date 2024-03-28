@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 10:46:30 by jberay            #+#    #+#             */
-/*   Updated: 2024/03/11 08:59:13 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/28 10:24:53 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,28 @@
 
 static int	loop_monitor(int i, t_philo *ph)
 {
+	u_int64_t	time;
+
 	while (++i < ph->data->ph_count)
 	{
 		ph = &ph->data->phs[i];
-		if (get_time() - get_last_meal(ph) > \
-			get_mutex_time(ph, TIME_TO_DIE))
+		if (get_time() - read_last_meal(ph) > ph->data->time_to_die)
 		{
-			set_state(ph, DEAD);
-			display_msg(ph, "died");
+			write_state(ph, DEAD);
+			mutex_lock(&ph->data->mutex_msg);
+			time = get_time() - ph->data->start_time;
+			printf("%llu %d %s\n", time, ph->id, "died");
+			mutex_unlock(&ph->data->mutex_msg);
 			return (1);
 		}
-		if (get_meals_eaten(ph) == get_mutex_flag(ph, NBR_OF_MEALS)
-			&& read_i_am_done(ph) == false)
+		if (read_meals_eaten(ph) == ph->data->nbr_of_meals
+			&& !read_done(ph))
 		{
-			write_i_am_done(ph, true);
-			set_done(ph);
+			write_done(ph);
+			ph->data->nbr_done++;
 		}
-		if (get_mutex_flag(ph, DONE) == get_mutex_flag(ph, PH_COUNT))
-		{
-			set_someone_died(ph, true);
+		if (ph->data->nbr_done == ph->data->ph_count)
 			return (1);
-		}
 	}
 	return (0);
 }
@@ -47,7 +48,7 @@ static void	*monitor(void *arg)
 
 	ph = (t_philo *)arg;
 	data = ph->data;
-	while (!get_mutex_flag(ph, SOMEONE_DIED))
+	while (1)
 	{
 		i = -1;
 		if (loop_monitor(i, ph))
@@ -55,9 +56,7 @@ static void	*monitor(void *arg)
 	}
 	i = -1;
 	while (++i < ph->data->ph_count)
-	{
-		set_state(&data->phs[i], DEAD);
-	}
+		write_state(&data->phs[i], DEAD);
 	return (NULL);
 }
 
@@ -67,13 +66,15 @@ static void	*routine(void *arg)
 
 	ph = (t_philo *)arg;
 	if (ph->id % 2 == 0)
-		ft_usleep(ph->data->time_to_eat / 2);
-	while (!check_state(ph, DEAD))
+		ft_usleep(10);
+	while (!read_state(ph, DEAD))
 	{
 		if (eat_routine(ph))
 			break ;
+		usleep(100);
 		if (sleep_routine(ph))
 			break ;
+		usleep(100);
 		if (think_routine(ph))
 			break ;
 	}
@@ -85,17 +86,17 @@ int	start_threads(t_data *data)
 	int	i;
 
 	i = -1;
-	if (pthread_create(&data->thread_mon, NULL, &monitor, &data->phs[0]))
+	if (pthread_create(&data->thd_mon, NULL, &monitor, &data->phs[0]))
 		return (ret_error(E_THREAD, data));
 	while (++i < data->ph_count)
 	{
-		if (pthread_create(&data->thread_ph[i], NULL, &routine, &data->phs[i]))
+		if (pthread_create(&data->thd_ph[i], NULL, &routine, &data->phs[i]))
 			return (ret_error(E_THREAD, data));
 	}
-	if (pthread_join(data->thread_mon, NULL))
+	if (pthread_join(data->thd_mon, NULL))
 		return (ret_error(E_JOIN, data));
 	i = -1;
 	while (++i < data->ph_count)
-		pthread_join(data->thread_ph[i], NULL);
+		pthread_detach(data->thd_ph[i]);
 	return (0);
 }

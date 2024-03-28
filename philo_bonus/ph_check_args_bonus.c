@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 10:43:51 by jberay            #+#    #+#             */
-/*   Updated: 2024/03/01 11:31:59 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/28 10:50:26 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	check_input(char **argv)
 		j = 0;
 		while (argv[i][j])
 		{
-			if (argv[i][j] == ' ')
+			if (argv[i][j] == '+')
 				j++;
 			if ((argv[i][j] < '0' || argv[i][j] > '9'))
 				return (1);

@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:30:06 by jberay            #+#    #+#             */
-/*   Updated: 2024/03/01 11:30:07 by jberay           ###   ########.fr       */
+/*   Updated: 2024/03/28 14:19:15 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	exit_error(t_error error, t_data *data)
 {
 	if (data->sem_forks.init)
 		sem_close(data->sem_forks.sem);
-	if (data->sem_forks.init)
+	if (data->sem_print.init)
 		sem_close(data->sem_print.sem);
-	if (data->sem_dead.init)
-		sem_close(data->sem_dead.sem);
+	if (data->sem_full.init)
+		sem_close(data->sem_full.sem);
 	if (data->ph.sem.init)
 		sem_close(data->ph.sem.sem);
 	if (data->pid != NULL)
@@ -46,13 +46,14 @@ void	exit_error(t_error error, t_data *data)
 	}
 	sem_unlink(SEM_FORK);
 	sem_unlink(SEM_PRINT);
-	sem_unlink(SEM_DEAD);
+	sem_unlink(SEM_FULL);
 	sem_unlink(SEM_NAME);
 	if (error != NO_ERROR)
 	{
 		printf("Error: %s\n", ft_strerror(error));
 		exit(error);
 	}
+	exit (0);
 }
 
 void	exit_child(t_state state, t_data *data)
@@ -61,8 +62,8 @@ void	exit_child(t_state state, t_data *data)
 		sem_close(data->sem_forks.sem);
 	if (data->sem_print.init)
 		sem_close(data->sem_print.sem);
-	if (data->sem_dead.init)
-		sem_close(data->sem_dead.sem);
+	if (data->sem_full.init)
+		sem_close(data->sem_full.sem);
 	if (data->ph.sem.init)
 		sem_close(data->ph.sem.sem);
 	if (data->pid != NULL)
@@ -72,7 +73,7 @@ void	exit_child(t_state state, t_data *data)
 	}
 	sem_unlink(SEM_FORK);
 	sem_unlink(SEM_PRINT);
-	sem_unlink(SEM_DEAD);
+	sem_unlink(SEM_FULL);
 	sem_unlink(SEM_NAME);
 	exit(state);
 }
