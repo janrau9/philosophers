@@ -20,15 +20,6 @@
 # include <unistd.h>
 # include <stdbool.h>
 
-typedef enum e_state
-{
-	EATING,
-	SLEEPING,
-	THINKING,
-	DEAD,
-	DONE
-}			t_state;
-
 typedef enum e_error
 {
 	NO_ERROR,
@@ -51,13 +42,11 @@ typedef struct s_philo
 	int				id;
 	int				meals_eaten;
 	bool			done;
-	t_state			state;
 	u_int64_t		last_meal;
 	pthread_mutex_t	*lft_frk;
 	pthread_mutex_t	*rght_frk;
 	t_mutex			mutex_last_meal;
 	t_mutex			mutex_meals_eaten;
-	t_mutex			mutex_state;
 	t_mutex			mutex_done;
 	struct s_data	*data;
 }					t_philo;
@@ -65,14 +54,14 @@ typedef struct s_philo
 typedef struct s_data
 {
 	int				ph_count;
-	bool			someone_died;
+	bool			died;
 	int				nbr_of_meals;
 	int				nbr_done;
 	pthread_t		*thd_ph;
 	pthread_t		thd_mon;
 	t_mutex			*forks;
 	t_mutex			mutex_msg;
-	t_mutex			mutex_mon;
+	t_mutex			mutex_died;
 	t_philo			*phs;
 	u_int64_t		time_to_die;
 	u_int64_t		time_to_eat;
@@ -102,13 +91,13 @@ void		mutex_lock(t_mutex *mutex);
 void		mutex_unlock(t_mutex *mutex);
 
 /*mutex reads*/
-bool		read_state(t_philo *ph, t_state state);
+bool		read_died(t_philo *ph);
 int			read_meals_eaten(t_philo *ph);
 u_int64_t	read_last_meal(t_philo *ph);
 bool		read_done(t_philo *ph);
 
 /*mutex writes*/
-void		write_state(t_philo *ph, t_state state);
+void		write_died(t_philo *ph);
 void		write_last_meal(t_philo *ph);
 void		write_meals_eaten(t_philo *ph);
 void		write_done(t_philo *ph);

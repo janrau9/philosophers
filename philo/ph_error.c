@@ -48,8 +48,6 @@ static void	destroy_mutex(t_data *data)
 			pthread_mutex_destroy(&data->phs[i].mutex_last_meal.mutex);
 		if (data->phs[i].mutex_meals_eaten.init)
 			pthread_mutex_destroy(&data->phs[i].mutex_meals_eaten.mutex);
-		if (data->phs[i].mutex_state.init)
-			pthread_mutex_destroy(&data->phs[i].mutex_state.mutex);
 		if (data->phs[i].mutex_done.init)
 			pthread_mutex_destroy(&data->phs[i].mutex_done.mutex);
 		if (data->forks[i].init)
@@ -57,6 +55,8 @@ static void	destroy_mutex(t_data *data)
 	}
 	if (data->mutex_msg.init)
 		pthread_mutex_destroy(&data->mutex_msg.mutex);
+	if (data->mutex_died.init)
+		pthread_mutex_destroy(&data->mutex_died.mutex);
 }
 
 int	ret_error(t_error error, t_data *data)

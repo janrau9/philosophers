@@ -12,15 +12,15 @@
 
 #include "philo.h"
 
-bool	read_state(t_philo *ph, t_state state)
+bool	read_died(t_philo *ph)
 {
 	bool	ret;
 
-	mutex_lock(&ph->mutex_state);
+	mutex_lock(&ph->data->mutex_died);
 	ret = false;
-	if (ph->state == state)
+	if (ph->data->died)
 		ret = true;
-	mutex_unlock(&ph->mutex_state);
+	mutex_unlock(&ph->data->mutex_died);
 	return (ret);
 }
 

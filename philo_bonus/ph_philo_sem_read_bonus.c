@@ -11,18 +11,34 @@
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+#include <errno.h>
+#include <fcntl.h>
 
-bool	read_state(t_data *data, t_state state)
+bool	read_died(void)
+{
+	sem_t	*sem;
+
+	unlink(SEM_DIED);
+	sem = sem_open(SEM_DIED, O_RDONLY, 0644, 0);
+	if (sem == SEM_FAILED)
+	{
+		return (false);
+	}
+	sem_close(sem);
+	unlink(SEM_DIED);
+	return (true);
+}
+/* bool	read_died(t_data *data)
 {
 	bool	ret;
 
-	ret = false;
 	sem_wait(data->ph.sem.sem);
-	if (data->ph.state == state)
+	ret = false;
+	if (data->ph.died)
 		ret = true;
 	sem_post(data->ph.sem.sem);
 	return (ret);
-}
+} */
 
 int	read_meals_eaten(t_data *data)
 {

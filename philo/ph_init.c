@@ -41,6 +41,8 @@ int	init_mutexes(t_data *data)
 
 	if (init_mutex(&data->mutex_msg))
 		return (E_MUTEX);
+	if (init_mutex(&data->mutex_died))
+		return (E_MUTEX);
 	i = -1;
 	while (++i < data->ph_count)
 	{
@@ -65,23 +67,18 @@ static void	set_forks(t_data *data)
 int	init_philos(t_data *data)
 {
 	int	i;
-	int	j;
 
 	i = -1;
-	j = -1;
 	while (++i < data->ph_count)
 	{
 		data->phs[i].id = i + 1;
 		data->phs[i].meals_eaten = 0;
 		data->phs[i].data = data;
 		data->phs[i].done = false;
-		data->phs[i].state = THINKING;
 		data->phs[i].last_meal = data->start_time;
 		if (init_mutex(&data->phs[i].mutex_last_meal))
 			return (E_MUTEX);
 		if (init_mutex(&data->phs[i].mutex_meals_eaten))
-			return (E_MUTEX);
-		if (init_mutex(&data->phs[i].mutex_state))
 			return (E_MUTEX);
 		if (init_mutex(&data->phs[i].mutex_done))
 			return (E_MUTEX);

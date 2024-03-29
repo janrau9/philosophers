@@ -37,6 +37,7 @@ void	set_forks(t_data *data)
 	sem_unlink(SEM_FORK);
 	sem_unlink(SEM_PRINT);
 	sem_unlink(SEM_FULL);
+	sem_unlink(SEM_DIED);
 	data->sem_forks.sem = sem_open(SEM_FORK, O_CREAT, 0644, data->ph_count);
 	if (data->sem_forks.sem == SEM_FAILED)
 		exit_error(E_SEM, data);
@@ -65,7 +66,6 @@ void	init_data(t_data *data)
 	data->sem_full.init = false;
 	data->ph.id = -1;
 	data->ph.last_meal = data->start_time;
-	data->ph.state = THINKING;
 	data->ph.meals_eaten = 0;
 	data->ph.i_am_done = false;
 }

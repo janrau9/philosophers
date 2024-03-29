@@ -44,9 +44,9 @@ void	check_args(t_data *args, char **argv)
 		args->nbr_of_meals = ft_atoi(argv[5]);
 	else
 		args->nbr_of_meals = -1;
-	if (args->ph_count <= 0
+	/* if (args->ph_count <= 0
 		|| args->time_to_die < 0
 		|| args->time_to_eat < 0
 		|| args->time_to_sleep < 0)
-		exit_error(E_ARGS, args);
+		exit_error(E_ARGS, args); */
 }

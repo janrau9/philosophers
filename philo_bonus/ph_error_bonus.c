@@ -56,7 +56,7 @@ void	exit_error(t_error error, t_data *data)
 	exit (0);
 }
 
-void	exit_child(t_state state, t_data *data)
+void	exit_child(t_error error, t_data *data)
 {
 	if (data->sem_forks.init)
 		sem_close(data->sem_forks.sem);
@@ -75,5 +75,5 @@ void	exit_child(t_state state, t_data *data)
 	sem_unlink(SEM_PRINT);
 	sem_unlink(SEM_FULL);
 	sem_unlink(SEM_NAME);
-	exit(state);
+	exit(error);
 }

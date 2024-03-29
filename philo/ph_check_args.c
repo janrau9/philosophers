@@ -60,7 +60,7 @@ int	check_input(char **argv)
 int	check_args(t_data *data, char **argv)
 {
 	data->ph_count = ft_atoi(argv[1]);
-	data->someone_died = false;
+	data->died = false;
 	data->nbr_done = 0;
 	data->thd_ph = NULL;
 	data->forks = NULL;
@@ -73,10 +73,10 @@ int	check_args(t_data *data, char **argv)
 		data->nbr_of_meals = ft_atoi(argv[5]);
 	else
 		data->nbr_of_meals = -1;
-	if (data->ph_count <= 0
+/* 	if (data->ph_count <= 0
 		|| data->time_to_die < 0
 		|| data->time_to_eat < 0
 		|| data->time_to_sleep < 0)
-		return (E_ARGS);
+		return (E_ARGS); */
 	return (0);
 }

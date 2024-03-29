@@ -12,11 +12,11 @@
 
 #include "philo.h"
 
-void	write_state(t_philo *ph, t_state state)
+void	write_died(t_philo *ph)
 {
-	mutex_lock(&ph->mutex_state);
-	ph->state = state;
-	mutex_unlock(&ph->mutex_state);
+	mutex_lock(&ph->data->mutex_died);
+	ph->data->died = true;
+	mutex_unlock(&ph->data->mutex_died);
 }
 
 void	write_last_meal(t_philo *ph)
@@ -46,7 +46,7 @@ void	display_msg(t_philo *ph, char *msg)
 
 	mutex_lock(&ph->data->mutex_msg);
 	time = get_time() - ph->data->start_time;
-	if (read_state(ph) != DEAD)
-		printf("%llu %d %s\n", time, ph->id, msg);
+	if (!read_died(ph))
+		printf("%lu %d %s\n", time, ph->id, msg);
 	mutex_unlock(&ph->data->mutex_msg);
 }

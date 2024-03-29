@@ -14,9 +14,8 @@
 
 int	sleep_routine(t_data *data)
 {
-	if (read_state(data, DEAD))
+	if (read_died())
 		return (1);
-	write_state(data, SLEEPING);
 	display_msg(data, "is sleeping");
 	ft_usleep(data->time_to_sleep);
 	return (0);
@@ -24,9 +23,8 @@ int	sleep_routine(t_data *data)
 
 int	think_routine(t_data *data)
 {
-	if (read_state(data, DEAD))
+	if (read_died())
 		return (1);
-	write_state(data, THINKING);
 	display_msg(data, "is thinking");
 	return (0);
 }

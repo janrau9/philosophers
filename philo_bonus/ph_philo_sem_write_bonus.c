@@ -12,12 +12,17 @@
 
 #include "philo_bonus.h"
 
-void	write_state(t_data *data, t_state state)
+void	write_died(void)
+{
+	sem_open(SEM_DIED, O_CREAT, 0644, 1);
+}
+
+/* void	write_died(t_data *data)
 {
 	sem_wait(data->ph.sem.sem);
-	data->ph.state = state;
+	data->ph.died = true;
 	sem_post(data->ph.sem.sem);
-}
+} */
 
 void	write_last_meal(t_data *data)
 {
@@ -39,7 +44,8 @@ void	display_msg(t_data *data, char *msg)
 
 	sem_wait(data->sem_print.sem);
 	time = get_time() - data->start_time;
-	printf("%llu %d %s\n", time, data->ph.id, msg);
+	if (!read_died())
+		printf("%lu %d %s\n", time, data->ph.id, msg);
 	sem_post(data->sem_print.sem);
 }
 

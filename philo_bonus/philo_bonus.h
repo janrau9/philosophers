@@ -28,14 +28,7 @@
 # define SEM_FORK "/forks"
 # define SEM_PRINT "/print"
 # define SEM_FULL "/full"
-
-typedef enum e_state
-{
-	EATING,
-	SLEEPING,
-	THINKING,
-	DEAD,
-}			t_state;
+# define SEM_DIED "/died"
 
 typedef enum e_error
 {
@@ -46,6 +39,7 @@ typedef enum e_error
 	E_JOIN,
 	E_SEM,
 	E_FORK,
+	E_DIED
 }			t_error;
 
 typedef struct s_sem
@@ -60,7 +54,7 @@ typedef struct s_philo
 	int				id;
 	int				meals_eaten;
 	bool			i_am_done;
-	t_state			state;
+	bool			died;
 	u_int64_t		last_meal;
 	t_sem			sem;
 	pthread_t		thread_mon;
@@ -100,12 +94,12 @@ void		start_fork(t_data *data);
 
 /*philo sem read*/
 int			read_meals_eaten(t_data *data);
-bool		read_state(t_data *data, t_state state);
+bool		read_died(void);
 u_int64_t	read_last_meal(t_data *data);
 bool		read_i_am_done(t_data *data);
 
 /*philo sem write*/
-void		write_state(t_data *data, t_state state);
+void		write_died(void);
 void		write_meals_eaten(t_data *data);
 void		write_last_meal(t_data *data);
 void		write_i_am_done(t_data *data, bool value);
@@ -120,6 +114,6 @@ char		*ft_strjoin(char *s1, char *s2);
 
 /*error*/
 void		exit_error(t_error error, t_data *data);
-void		exit_child(t_state state, t_data *data);
+void		exit_child(t_error error, t_data *data);
 
 #endif

@@ -23,7 +23,6 @@ SRCS 			=	ph_check_args.c \
 					ph_utils.c \
 					ph_threads.c \
 					ph_life.c \
-					ph_eat_routine.c \
 					ph_mutex_loop.c \
 					ph_mutex_read.c \
 					ph_mutex_write.c \
