@@ -25,7 +25,6 @@ SRCS 			=	ph_check_args_bonus.c \
 					ph_life_bonus.c \
 					ph_philo_sem_read_bonus.c \
 					ph_philo_sem_write_bonus.c \
-					ph_eat_routine_bonus.c \
 					ft_itoa_bonus.c \
 					ft_strjoin_bonus.c \
 						

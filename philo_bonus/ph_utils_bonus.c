@@ -54,3 +54,25 @@ void	ft_usleep(u_int64_t time)
 		usleep(500);
 	}
 }
+
+void	display_msg(t_data *data, char *msg)
+{
+	u_int64_t	time;
+
+	sem_wait(data->sem_print.sem);
+	time = get_time() - data->start_time;
+	if (!read_died(data))
+		printf("%lu %d %s\n", time, data->ph.id, msg);
+	sem_post(data->sem_print.sem);
+}
+
+void	write_full(t_data *data)
+{
+	(void)data;
+	//printf("All philosophers have eaten %d meals\n", data->nbr_of_meals);
+	sem_open(SEM_DIED, O_CREAT, 0644, 1);
+	/* data->sem_full.sem = sem_open(SEM_DIED, O_CREAT, 0644, 1);
+	if (data->sem_full.sem == SEM_FAILED)
+		exit_error(E_SEM, data);
+	data->sem_full.init = true; */
+}

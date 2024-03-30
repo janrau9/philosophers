@@ -94,16 +94,19 @@ void		start_fork(t_data *data);
 
 /*philo sem read*/
 int			read_meals_eaten(t_data *data);
-bool		read_died(void);
+bool		read_died(t_data *data);
 u_int64_t	read_last_meal(t_data *data);
 bool		read_i_am_done(t_data *data);
+bool		read_someone_died(t_data *data);
 
 /*philo sem write*/
-void		write_died(void);
+void		write_died(t_data *data);
 void		write_meals_eaten(t_data *data);
 void		write_last_meal(t_data *data);
 void		write_i_am_done(t_data *data, bool value);
 void		display_msg(t_data *data, char *msg);
+void		write_full(t_data *data);
+void		write_someone_died(t_data *data);
 
 /*utils*/
 void		ft_usleep(u_int64_t time);

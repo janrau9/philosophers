@@ -11,24 +11,26 @@
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-#include <errno.h>
-#include <fcntl.h>
 
-bool	read_died(void)
+bool	read_someone_died(t_data *data)
 {
 	sem_t	*sem;
 
+	sem_wait(data->ph.sem.sem);
 	unlink(SEM_DIED);
-	sem = sem_open(SEM_DIED, O_RDONLY, 0644, 0);
+	sem = sem_open(SEM_DIED, O_RDONLY, 0644, 1);
 	if (sem == SEM_FAILED)
 	{
+		sem_post(data->ph.sem.sem);
 		return (false);
 	}
 	sem_close(sem);
 	unlink(SEM_DIED);
+	//printf("%d Philosopher killed\n", data->ph.id);
+	sem_post(data->ph.sem.sem);
 	return (true);
 }
-/* bool	read_died(t_data *data)
+bool	read_died(t_data *data)
 {
 	bool	ret;
 
@@ -38,7 +40,7 @@ bool	read_died(void)
 		ret = true;
 	sem_post(data->ph.sem.sem);
 	return (ret);
-} */
+}
 
 int	read_meals_eaten(t_data *data)
 {

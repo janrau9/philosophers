@@ -48,6 +48,7 @@ void	exit_error(t_error error, t_data *data)
 	sem_unlink(SEM_PRINT);
 	sem_unlink(SEM_FULL);
 	sem_unlink(SEM_NAME);
+	sem_unlink(SEM_DIED);
 	if (error != NO_ERROR)
 	{
 		printf("Error: %s\n", ft_strerror(error));
@@ -75,5 +76,6 @@ void	exit_child(t_error error, t_data *data)
 	sem_unlink(SEM_PRINT);
 	sem_unlink(SEM_FULL);
 	sem_unlink(SEM_NAME);
+	sem_unlink(SEM_DIED);
 	exit(error);
 }
