@@ -72,6 +72,7 @@ typedef struct s_data
 	t_sem			sem_forks;
 	t_sem			sem_print;
 	t_sem			sem_full;
+	t_sem			sem_died;
 	t_philo			ph;
 }					t_data;
 
@@ -118,5 +119,8 @@ char		*ft_strjoin(char *s1, char *s2);
 /*error*/
 void		exit_error(t_error error, t_data *data);
 void		exit_child(t_error error, t_data *data);
+
+void    sem_unlock(t_sem *sem);
+void    sem_lock(t_sem *sem);
 
 #endif

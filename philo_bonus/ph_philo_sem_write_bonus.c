@@ -15,7 +15,7 @@
 void	write_someone_died(t_data *data)
 {
 	sem_wait(data->ph.sem.sem);
-	sem_open(SEM_DIED, O_CREAT, 0644, 1);
+	data->sem_died.sem = sem_open(SEM_DIED, O_CREAT, 0644, 1);
 	sem_post(data->ph.sem.sem);
 }
 

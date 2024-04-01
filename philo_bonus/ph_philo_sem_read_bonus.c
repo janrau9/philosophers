@@ -14,19 +14,15 @@
 
 bool	read_someone_died(t_data *data)
 {
-	sem_t	*sem;
-
 	sem_wait(data->ph.sem.sem);
-	unlink(SEM_DIED);
-	sem = sem_open(SEM_DIED, O_RDONLY, 0644, 1);
-	if (sem == SEM_FAILED)
+	data->sem_died.sem = sem_open(SEM_DIED, O_EXCL, 0644, 1);
+	if (data->sem_died.sem == SEM_FAILED)
 	{
 		sem_post(data->ph.sem.sem);
 		return (false);
 	}
-	sem_close(sem);
-	unlink(SEM_DIED);
-	//printf("%d Philosopher killed\n", data->ph.id);
+	//printf("opened sem\n");
+	sem_close(data->sem_died.sem);
 	sem_post(data->ph.sem.sem);
 	return (true);
 }

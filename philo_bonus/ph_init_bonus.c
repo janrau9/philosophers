@@ -26,10 +26,10 @@ void	init_philos(t_data *data, int i)
 		exit_error(E_SEM, data);
 	sem_unlink(sem_name);
 	free(sem_name);
-	write_last_meal(data);
 	if (data->ph.sem.sem == SEM_FAILED)
 		exit_error(E_SEM, data);
 	data->ph.sem.init = true;
+	write_last_meal(data);
 }
 
 void	set_forks(t_data *data)

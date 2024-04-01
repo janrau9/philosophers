@@ -14,8 +14,6 @@
 
 int	sleep_routine(t_data *data)
 {
-	if (read_died(data))
-		return (1);
 	display_msg(data, "is sleeping");
 	ft_usleep(data->time_to_sleep);
 	return (0);
@@ -23,16 +21,12 @@ int	sleep_routine(t_data *data)
 
 int	think_routine(t_data *data)
 {
-	if (read_died(data))
-		return (1);
 	display_msg(data, "is thinking");
 	return (0);
 }
 
 static int	pick_right_fork(t_data *data)
 {
-	if (read_died(data))
-		return (1);
 	sem_wait(data->sem_forks.sem);
 	display_msg(data, "has taken a fork");
 	return (0);

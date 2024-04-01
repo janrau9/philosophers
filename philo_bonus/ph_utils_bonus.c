@@ -68,11 +68,9 @@ void	display_msg(t_data *data, char *msg)
 
 void	write_full(t_data *data)
 {
-	(void)data;
 	//printf("All philosophers have eaten %d meals\n", data->nbr_of_meals);
-	sem_open(SEM_DIED, O_CREAT, 0644, 1);
-	/* data->sem_full.sem = sem_open(SEM_DIED, O_CREAT, 0644, 1);
+	data->sem_full.sem = sem_open(SEM_DIED, O_CREAT, 0644, 1);
 	if (data->sem_full.sem == SEM_FAILED)
 		exit_error(E_SEM, data);
-	data->sem_full.init = true; */
+	data->sem_full.init = true;
 }

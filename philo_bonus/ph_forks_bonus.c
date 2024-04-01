@@ -18,13 +18,13 @@ static int	loop_monitor(t_data *data)
 
 	if (get_time() - read_last_meal(data) > data->time_to_die)
 	{
-		write_someone_died(data);
 		write_died(data);
 		sem_wait(data->sem_print.sem);
 		time = get_time() - data->start_time;
 		printf("%lu %d %s\n", time, data->ph.id, "died");
 		sem_post(data->sem_print.sem);
 		sem_post(data->sem_full.sem);
+		write_someone_died(data);
 		return (1);
 	}
 	if (read_meals_eaten(data) == data->nbr_of_meals && !read_i_am_done(data))
@@ -63,13 +63,14 @@ static void	routine_proc(t_data *data, int i)
 	init_philos(data, i);
 	if (pthread_create(&data->ph.thread_mon, NULL, &monitor, data))
 		exit_error(E_THREAD, data);
-	while (!read_died(data))
+	while (1)
 	{
-		if (eat_routine(data))
+
+		if (eat_routine(data) || read_died(data))
 			break ;
-		if (sleep_routine(data))
+		if (sleep_routine(data) || read_died(data))
 			break ;
-		if (think_routine(data))
+		if (think_routine(data) || read_died(data))
 			break ;
 	}
 	if (pthread_join(data->ph.thread_mon, NULL))
