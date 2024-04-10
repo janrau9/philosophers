@@ -29,3 +29,5 @@ times, the simulation stops. If not specified, the simulation stops when a
 
 Example
 $ ./philo 5 800 800 200 7
+
+Simulation starts and all philosophers loops through it's own routine and exits when all have finished eating number of meals or if a philosopher died.
