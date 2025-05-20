@@ -18,7 +18,7 @@ static int	death_loop(t_philo *ph)
 	{
 		write_died(ph);
 		mutex_lock(&ph->data->mutex_msg);
-		printf("%llu %d %s\n", get_time() - ph->data->start_time,
+		printf("%lu %d %s\n", get_time() - ph->data->start_time,
 			ph->id, "died");
 		mutex_unlock(&ph->data->mutex_msg);
 		return (1);

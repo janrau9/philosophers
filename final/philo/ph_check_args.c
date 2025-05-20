@@ -59,12 +59,20 @@ int	check_input(char **argv)
 
 int	check_args(t_data *data, char **argv)
 {
-	data->ph_count = ft_atoi(argv[1]);
+	int i;
+	i = 1;
 	data->died = false;
 	data->nbr_done = 0;
 	data->thd_ph = NULL;
 	data->forks = NULL;
 	data->phs = NULL;
+	while (argv[i])
+	{
+		if (ft_atoi(argv[i]) < 0)
+			return (E_ARGS);
+		i++;
+	}
+	data->ph_count = ft_atoi(argv[1]);
 	data->time_to_die = (u_int64_t)ft_atoi(argv[2]);
 	data->time_to_eat = (u_int64_t)ft_atoi(argv[3]);
 	data->time_to_sleep = (u_int64_t)ft_atoi(argv[4]);
@@ -73,10 +81,6 @@ int	check_args(t_data *data, char **argv)
 		data->nbr_of_meals = ft_atoi(argv[5]);
 	else
 		data->nbr_of_meals = -1;
-	if (data->ph_count <= 0
-		|| data->time_to_die < 0
-		|| data->time_to_eat < 0
-		|| data->time_to_sleep < 0)
-		return (E_ARGS);
+	if (data->ph_count <= 0) return (E_ARGS);
 	return (0);
 }

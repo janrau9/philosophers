@@ -47,6 +47,6 @@ void	display_msg(t_philo *ph, char *msg)
 	mutex_lock(&ph->data->mutex_msg);
 	time = get_time() - ph->data->start_time;
 	if (!read_died(ph))
-		printf("%llu %d %s\n", time, ph->id, msg);
+		printf("%lu %d %s\n", time, ph->id, msg);
 	mutex_unlock(&ph->data->mutex_msg);
 }
